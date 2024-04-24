@@ -1,13 +1,13 @@
 
 const calendarAPI = {
     scheduleEvent: function(eventName, eventDate) {
-      // api call to schedule an event
+      
       console.log(`Event "${eventName}" scheduled for ${eventDate}`);
       
       return Promise.resolve({ success: true, message: 'Event scheduled successfully' });
     },
     getEvents: function() {
-      // api call to fetch events
+      
       const events = [
         {
           title: 'Tutoring Session',
@@ -24,7 +24,7 @@ const calendarAPI = {
     }
   };
   
-  // user authentication and account creation api
+  // user authentication and account creation api (still need to finish)
   const authAPI = {
     login: function(username, password) {
       // authenticate user
