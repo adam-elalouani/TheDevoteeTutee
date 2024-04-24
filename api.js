@@ -65,6 +65,7 @@ const calendarAPI = {
   };
   
   
+  
   calendarAPI.scheduleEvent('Tutoring Session', '2024-04-25T10:00:00')
     .then(response => console.log(response))
     .catch(error => console.error(error));
