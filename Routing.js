@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const calendarAPI = require('./api.js');
+const calendarAPI = require('./calenderapi.js');
 
 router.post('/scheduleEvent', (req, res) => {
     const { eventName, eventDate } = req.body;
