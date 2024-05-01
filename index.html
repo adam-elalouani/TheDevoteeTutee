@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutor Scheduling System</title>
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css' rel='stylesheet' />
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js'></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    #calendar {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: #f8f9fa;
+    }
+    .navbar a {
+      text-decoration: none;
+      color: #333;
+      padding: 5px 10px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div>
+      <h1>Tutor Scheduling System</h1>
+    </div>
+    <div>
+      <a href="#" id="signupBtn">Sign Up</a>
+    </div>
+  </nav>
+
+  <div id="calendar"></div>
+  
+  <script>
+    $(document).ready(function() {
+      $('#calendar').fullCalendar({
+        header: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'month,agendaWeek,agendaDay'
+        },
+        defaultView: 'month',
+        editable: true,
+        events: [
+          {
+            title: 'Tutoring Session',
+            start: '2024-05-01T10:00:00',
+            end: '2024-05-01T12:00:00'
+          },
+          {
+            title: 'Tutee Meeting',
+            start: '2024-05-02T14:00:00',
+            end: '2024-05-02T16:00:00'
+          }
+        ]
+      });
+
+      //redirection to main screen (i dont know if it works yet)
+      $('#signupBtn').on('click', function() {
+        window.location.href = 'signup.html';
+      });
+    });
+  </script>
+</body>
+</html>
