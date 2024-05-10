@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tutor Scheduling System</title>
+  <title>The Devotee Tutee</title>
   <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css' rel='stylesheet' />
   <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.print.min.css' rel='stylesheet' media='print' />
   <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
@@ -13,9 +13,13 @@
     body {
       font-family: Arial, sans-serif;
     }
-    #calendar {
+    .container {
       max-width: 800px;
       margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
     }
     .navbar {
       display: flex;
@@ -29,19 +33,48 @@
       color: #333;
       padding: 5px 10px;
     }
+    #calendar {
+      width: 60%; 
+      margin: 0 auto; 
+      float: left; 
+    }
+    #meetingForm {
+      width: 30%; 
+      margin-left: 10px; 
+      float: right; 
+    }
   </style>
 </head>
 <body>
   <nav class="navbar">
     <div>
-      <h1>Tutor Scheduling System</h1>
+      <h1>The Devotee Tutee</h1>
     </div>
     <div>
-      <a href="#" id="signupBtn">Sign Up</a>
+      <a href="#" id="signupBtn">Sign Up</a> 
+      <a href="#" id="scheduleMeetingBtn">Schedule a Meeting</a> 
     </div>
   </nav>
 
+  <div class="container">
+    <h2>Tutor Scheduling System</h2>
+    <p> Equations Made Simple, Results Made Remarkabkle. Click "Sign Up" in the top right to make an account and schedule meetings.</p>
+  </div>
+
   <div id="calendar"></div>
+
+  <div id="meetingForm" style="display: none;">
+    <h2>Schedule a Meeting</h2>
+    <form id="newMeetingForm">
+      <label for="meetingTitle">Meeting Title:</label>
+      <input type="text" id="meetingTitle" name="title"><br><br>
+      <label for="meetingStart">Start Time:</label>
+      <input type="datetime-local" id="meetingStart" name="start"><br><br>
+      <label for="meetingEnd">End Time:</label>
+      <input type="datetime-local" id="meetingEnd" name="end"><br><br>
+      <input type="submit" value="Schedule Meeting">
+    </form>
+  </div>
   
   <script>
     $(document).ready(function() {
@@ -67,9 +100,38 @@
         ]
       });
 
-      //redirection to main screen (i dont know if it works yet)
-      $('#signupBtn').on('click', function() {
-        window.location.href = 'signup.html';
+      $('#signupBtn').on('click', function(event) {
+        event.preventDefault(); 
+        window.location.href = "signup.html"; 
+      });
+
+      $('#scheduleMeetingBtn').on('click', function(event) {
+        event.preventDefault();
+        $('#meetingForm').show(); 
+      });
+
+      $('#newMeetingForm').submit(function(event) {
+        event.preventDefault();
+        
+        var title = $('#meetingTitle').val();
+        var start = $('#meetingStart').val();
+        var end = $('#meetingEnd').val();
+        
+        if (title && start && end) {
+          $('#calendar').fullCalendar('renderEvent', {
+            title: title,
+            start: start,
+            end: end
+          }, true);
+
+          $('#meetingTitle').val('');
+          $('#meetingStart').val('');
+          $('#meetingEnd').val('');
+
+          $('#meetingForm').hide();
+        } else {
+          alert('Please fill in all fields.');
+        }
       });
     });
   </script>
