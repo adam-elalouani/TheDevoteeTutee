@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Devotee Tutee</title>
+  <title>Devotee Tutee</title>
   <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css' rel='stylesheet' />
   <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.print.min.css' rel='stylesheet' media='print' />
   <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
@@ -58,7 +58,7 @@
 
   <div class="container">
     <h2>Tutor Scheduling System</h2>
-    <p> Equations Made Simple, Results Made Remarkabkle. Click "Sign Up" in the top right to make an account and schedule meetings.</p>
+    <p> Equations Made Simple, Results Made Remarkable. Click "Sign Up" in the top right to make an account and schedule meetings.</p>
   </div>
 
   <div id="calendar"></div>
@@ -72,6 +72,8 @@
       <input type="datetime-local" id="meetingStart" name="start"><br><br>
       <label for="meetingEnd">End Time:</label>
       <input type="datetime-local" id="meetingEnd" name="end"><br><br>
+      <label for="tutorSelect">Select Tutor:</label>
+      <select id="tutorSelect" name="tutorId"></select><br><br>
       <input type="submit" value="Schedule Meeting">
     </form>
   </div>
@@ -86,18 +88,7 @@
         },
         defaultView: 'month',
         editable: true,
-        events: [
-          {
-            title: 'Tutoring Session',
-            start: '2024-05-01T10:00:00',
-            end: '2024-05-01T12:00:00'
-          },
-          {
-            title: 'Tutee Meeting',
-            start: '2024-05-02T14:00:00',
-            end: '2024-05-02T16:00:00'
-          }
-        ]
+        events: '/meetings'
       });
 
       $('#signupBtn').on('click', function(event) {
@@ -107,7 +98,14 @@
 
       $('#scheduleMeetingBtn').on('click', function(event) {
         event.preventDefault();
-        $('#meetingForm').show(); 
+        $('#meetingForm').show();
+
+        $.get('/tutors', function(tutors) {
+          $('#tutorSelect').empty();
+          tutors.forEach(function(tutor) {
+            $('#tutorSelect').append(`<option value="${tutor.id}">${tutor.firstName} ${tutor.lastName} - ${tutor.subject}</option>`);
+          });
+        });
       });
 
       $('#newMeetingForm').submit(function(event) {
@@ -116,19 +114,32 @@
         var title = $('#meetingTitle').val();
         var start = $('#meetingStart').val();
         var end = $('#meetingEnd').val();
+        var tutorId = $('#tutorSelect').val();
         
-        if (title && start && end) {
-          $('#calendar').fullCalendar('renderEvent', {
-            title: title,
-            start: start,
-            end: end
-          }, true);
+        if (title && start && end && tutorId) {
+          $.ajax({
+            type: 'POST',
+            url: '/schedule-meeting',
+            data: JSON.stringify({ title, start, end, tutorId }),
+            contentType: 'application/json',
+            success: function() {
+              $('#calendar').fullCalendar('renderEvent', {
+                title: title,
+                start: start,
+                end: end
+              }, true);
 
-          $('#meetingTitle').val('');
-          $('#meetingStart').val('');
-          $('#meetingEnd').val('');
+              $('#meetingTitle').val('');
+              $('#meetingStart').val('');
+              $('#meetingEnd').val('');
+              $('#tutorSelect').val('');
 
-          $('#meetingForm').hide();
+              $('#meetingForm').hide();
+            },
+            error: function() {
+              alert('Failed to schedule meeting');
+            }
+          });
         } else {
           alert('Please fill in all fields.');
         }

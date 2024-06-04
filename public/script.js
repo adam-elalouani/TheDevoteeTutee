@@ -7,10 +7,10 @@ $(document).ready(function() {
       },
       defaultView: 'month',
       editable: true,
-      events: [] // No initial events
+      events: [] 
     });
   
-    // Handle form submission for scheduling meetings
+
     $('#newMeetingForm').submit(function(event) {
       event.preventDefault();
       
@@ -19,14 +19,14 @@ $(document).ready(function() {
       var end = $('#meetingEnd').val();
       
       if (title && start && end) {
-        // Render the meeting on the calendar
+       
         $('#calendar').fullCalendar('renderEvent', {
           title: title,
           start: start,
           end: end
         }, true);
   
-        // Clear form fields after submission
+     
         $('#meetingTitle').val('');
         $('#meetingStart').val('');
         $('#meetingEnd').val('');

@@ -58,5 +58,36 @@
       <input type="submit" value="Sign Up">
     </form>
   </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#signupForm').submit(function(event) {
+        event.preventDefault();
+        
+        var username = $('#username').val();
+        var email = $('#email').val();
+        var password = $('#password').val();
+        
+        if (username && email && password) {
+          $.ajax({
+            type: 'POST',
+            url: '/signup',
+            data: JSON.stringify({ username, email, password }),
+            contentType: 'application/json',
+            success: function() {
+              alert('User signed up successfully');
+              window.location.href = 'index.html';
+            },
+            error: function() {
+              alert('Failed to sign up user');
+            }
+          });
+        } else {
+          alert('Please fill in all fields.');
+        }
+      });
+    });
+  </script>
 </body>
 </html>
